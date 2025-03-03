@@ -11,6 +11,14 @@
     "test:watch": "jest --passWithNoTests --watch"
   },
   "dependencies": {
+    "@heroui/autocomplete": "^2.3.16",
+    "@heroui/button": "^2.2.15",
+    "@heroui/card": "^2.2.14",
+    "@heroui/input": "^2.4.15",
+    "@heroui/navbar": "^2.2.13",
+    "@heroui/system": "^2.4.11",
+    "@heroui/theme": "^2.4.11",
+    "framer-motion": "^12.4.7",
     "next": "^15.2.1-canary.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
