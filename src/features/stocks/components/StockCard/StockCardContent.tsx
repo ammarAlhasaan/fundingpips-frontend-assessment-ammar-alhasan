@@ -1,14 +1,15 @@
 "use client";
-import { useEffect, useState} from "react";
-import {Card, CardBody, CardFooter, CardHeader, Link, Divider, Suspense, Button} from "@/components/ui";
+import {useEffect, useState} from "react";
+import {Button, Card, CardBody, CardFooter, CardHeader, Divider, Link, Suspense} from "@/components/ui";
 import {useWatchlistStore} from "@/features/stocks";
 import Chart from "./Chart";
 import {fetchRandomStockHistory, fetchStockHistory} from "@/features/stocks/api";
 
 
 export default function StockCardContent({details}: { details: any }) {
+
   const [chart, setChart] = useState<any[]>([]);
-  const {addStock, watchlist} = useWatchlistStore();
+  const {addStock, watchlist, removeStock} = useWatchlistStore();
   const isInWatchlist = watchlist.includes(details?.ticker);
 
   useEffect(() => {
@@ -67,7 +68,8 @@ export default function StockCardContent({details}: { details: any }) {
             </p>
           </div>
           <div className="">
-            <p className="text-2xl font-semibold">{currentValue?.close} USD</p>
+            <span className="text-2xl font-semibold">{currentValue?.close} </span>
+            <span className="text-xl font-semibold">USD</span>
           </div>
         </div>
       </CardHeader>
@@ -81,9 +83,9 @@ export default function StockCardContent({details}: { details: any }) {
           </div>
         </div>
         <div className="flex">
-          <span className="text-small text-default-500">
+          <p className="mt-4 text-small text-content4">
             {details.description}
-          </span>
+          </p>
         </div>
 
 
@@ -93,7 +95,13 @@ export default function StockCardContent({details}: { details: any }) {
         <Button
           color={isInWatchlist ? "primary" : "default"}
           size="sm"
-          onPress={() => addStock(details.ticker)}
+          onPress={() => {
+            if (isInWatchlist) {
+              removeStock(details.ticker)
+            } else {
+              addStock(details.ticker)
+            }
+          }}
         >
           {isInWatchlist ? "Added to Watchlist" : "Add to Watchlist"}
         </Button>

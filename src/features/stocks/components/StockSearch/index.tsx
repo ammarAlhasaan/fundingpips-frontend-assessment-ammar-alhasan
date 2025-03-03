@@ -1,10 +1,10 @@
 "use cache";
 
 import {fetchAllStocks} from "@/features/stocks/api";
-import StockSearchClient from "./StockSearchClient";
+import StockSearchContent from "./StockSearchContent";
 
 export default async function StockListContainer() {
   const data = await fetchAllStocks();
 
-  return <StockSearchClient stocks={data.results} />;
+  return <StockSearchContent stocks={data.results} />;
 }

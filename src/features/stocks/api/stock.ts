@@ -1,7 +1,3 @@
-// DnbfhNmwKypA3zlGQEiWapCT3G03lY8G
-// https://api.polygon.io/v1/related-companies/${ticker}?apiKey=DnbfhNmwKypA3zlGQEiWapCT3G03lY8G
-// url = 'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${ticker}&apikey=FENL1WGQPGDR1LXP'
-// https://api.polygon.io/v3/reference/tickers?active=true&limit=100&apiKey=DnbfhNmwKypA3zlGQEiWapCT3G03lY8G
 export async function fetchAllStocks() {
   const all = `https://api.polygon.io/v3/reference/tickers?type=CS&market=stocks&active=true&limit=100&apiKey=DnbfhNmwKypA3zlGQEiWapCT3G03lY8G`;
   const res = await fetch(all);
@@ -14,7 +10,7 @@ export async function fetchAllStocks() {
 export async function fetchStockPrice(ticker: string) {
   const all = `https://api.polygon.io/v3/reference/tickers/${ticker}?apiKey=DnbfhNmwKypA3zlGQEiWapCT3G03lY8G`;
   const res = await fetch(all, {
-    next: { revalidate: 60 }, // ISR: updates every 60 seconds
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) console.log("Failed to fetch stock data");
