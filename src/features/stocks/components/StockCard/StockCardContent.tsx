@@ -1,12 +1,22 @@
 "use client";
 import {useEffect, useState} from "react";
-import {Button, Card, CardBody, CardFooter, CardHeader, Divider, Link, Suspense} from "@/components/ui";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Link,
+  SkeletonLoading,
+  Suspense
+} from "@/components/ui";
 import {useWatchlistStore} from "@/features/stocks";
 import Chart from "./Chart";
 import {fetchRandomStockHistory, fetchStockHistory} from "@/features/stocks/api";
 
 
-export default function StockCardContent({details}: { details: any }) {
+export default function StockCardContent({details, ticker}: { details: any, ticker: string }) {
 
   const [chart, setChart] = useState<any[]>([]);
   const {addStock, watchlist, removeStock} = useWatchlistStore();
@@ -54,12 +64,17 @@ export default function StockCardContent({details}: { details: any }) {
   }, [details?.ticker]);
   const currentValue = chart[chart.length - 1];
 
-  if (!details) {
-    return <div>Loading...</div>;
+
+  if (!details || !ticker) {
+    return <Card className="flex h-[400px]">
+      {!ticker ? <div className="flex-1 content-center text-center">
+        <p className="text-content font-semibold">Search to see a result...</p>
+        </div> : <SkeletonLoading/>}
+    </Card>;
   }
 
   return (
-    <Card className="flex">
+    <Card className="flex w-full">
       <CardHeader>
         <div className="flex justify-between content-between flex-1">
           <div className="flex-1">

@@ -6,5 +6,5 @@ export default async function StockCard({ ticker }: any) {
   const data = await fetchStockPrice(ticker);
 
   // Send data to the client component
-  return <StockCardContent details={data.results} />;
+  return <StockCardContent details={data.results} ticker={ticker} />;
 }

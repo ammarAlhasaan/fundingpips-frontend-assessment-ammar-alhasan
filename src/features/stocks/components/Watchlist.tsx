@@ -16,7 +16,7 @@ export default function Watchlist() {
   const { watchlist, removeStock, resetWatchlist } = useWatchlistStore();
 
   return (
-    <Card className="max-w-[400px] w-full mx-auto">
+    <Card className="w-full mx-auto">
       <CardHeader className="flex gap-3">
         <div className="flex flex-col">
           <p className="text-md">Your Watchlist</p>

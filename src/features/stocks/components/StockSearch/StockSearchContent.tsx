@@ -32,7 +32,6 @@ export default function StockSearchContent({stocks}: { stocks: any[] }) {
   return (
     <div className="relative w-full">
       <Autocomplete
-        className="max-w-xs"
         items={filteredStocks}
         label="Stocks"
         placeholder="Type to search..."
