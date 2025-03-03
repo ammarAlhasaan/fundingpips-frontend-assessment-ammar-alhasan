@@ -15,7 +15,6 @@ export default async function StocksPage(
         <StockSearch/>
       </div>
       <div className="flex flex-col sm:flex-row gap-4">
-        {/* Make StockCardContainer larger */}
         <div className="flex-1">
           <StockCard ticker={ticker}/>
         </div>

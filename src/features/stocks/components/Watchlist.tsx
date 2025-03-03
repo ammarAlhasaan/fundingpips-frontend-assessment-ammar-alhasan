@@ -59,7 +59,7 @@ export default function Watchlist() {
           <CardFooter>
             <Link
               color="danger"
-              onPress={(e) => {
+              onPress={() => {
                 resetWatchlist();
               }}
             >

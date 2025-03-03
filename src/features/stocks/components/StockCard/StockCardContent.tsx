@@ -12,19 +12,56 @@ import {
   Suspense
 } from "@/components/ui";
 import {useWatchlistStore} from "@/features/stocks";
-import Chart from "./Chart";
+import Chart, {ChartData} from "./Chart";
 import {fetchRandomStockHistory, fetchStockHistory} from "@/features/stocks/api";
 
+export interface StockData {
+  ticker: string;
+  name: string;
+  market: string;
+  locale: string;
+  primary_exchange: string;
+  type: string;
+  active: boolean;
+  currency_name: string;
+  cik: string;
+  composite_figi: string;
+  share_class_figi: string;
+  market_cap: number;
+  phone_number: string;
+  address: {
+    address1: string;
+    address2?: string; // Optional
+    city: string;
+    state: string;
+    postal_code: string;
+  };
+  description: string;
+  sic_code: string;
+  sic_description: string;
+  ticker_root: string;
+  homepage_url: string;
+  total_employees: number;
+  list_date: string;
+  branding: {
+    logo_url: string;
+    icon_url: string;
+  };
+  share_class_shares_outstanding: number;
+  weighted_shares_outstanding: number;
+  round_lot: number;
+}
 
-export default function StockCardContent({details, ticker}: { details: any, ticker: string }) {
+export default function StockCardContent({details, ticker}: { details: StockData, ticker: string }) {
 
-  const [chart, setChart] = useState<any[]>([]);
+
+  const [chart, setChart] = useState<ChartData[]>([]);
   const {addStock, watchlist, removeStock} = useWatchlistStore();
   const isInWatchlist = watchlist.includes(details?.ticker);
 
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+  const currentValue = chart[chart.length - 1];
 
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetchStockHistory(20);
@@ -38,17 +75,14 @@ export default function StockCardContent({details, ticker}: { details: any, tick
     const fetchRandomData = async () => {
       try {
         const response = await fetchRandomStockHistory();
-
         if (!response) return;
 
         setChart((prev) => {
-          if (prev.length === 0) return [response];
+          if (!prev || prev.length === 0) return [response];
 
           const updatedChart = [...prev, response];
 
-          return updatedChart.length > 20
-            ? updatedChart.slice(1)
-            : updatedChart;
+          return updatedChart.length > 20 ? updatedChart.slice(1) : updatedChart;
         });
       } catch (error) {
         console.error("Error fetching stock data:", error);
@@ -56,20 +90,17 @@ export default function StockCardContent({details, ticker}: { details: any, tick
     };
 
     fetchData();
-    intervalId = setInterval(fetchRandomData, 5000);
+    const intervalId = setInterval(fetchRandomData, 5000);
 
-    return () => {
-      clearInterval(intervalId);
-    };
+    return () => clearInterval(intervalId);
   }, [details?.ticker]);
-  const currentValue = chart[chart.length - 1];
 
 
   if (!details || !ticker) {
     return <Card className="flex h-[400px]">
       {!ticker ? <div className="flex-1 content-center text-center">
         <p className="text-content font-semibold">Search to see a result...</p>
-        </div> : <SkeletonLoading/>}
+      </div> : <SkeletonLoading/>}
     </Card>;
   }
 

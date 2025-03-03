@@ -1,20 +1,18 @@
 "use client";
-
 import {
-  Chart as ChartJS,
   CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
+  Chart as ChartJS,
+  ChartOptions,
   Filler,
   Legend,
-  ChartOptions,
-  ChartData,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
-import { useMemo } from "react";
+import {Line} from "react-chartjs-2";
+import {useMemo} from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -44,23 +42,41 @@ export const options: ChartOptions<"line"> = {
   },
 };
 
-export default function Chart({ data }: { data: any[] }) {
-  // Use useMemo to optimize re-rendering
-  const chartData: ChartData<any> = useMemo(
+export interface ChartData {
+  timestamp: string;
+  open: number;
+  high?: number;
+  low?: number;
+  close: number;
+  volume?: number;
+}
+
+interface ChartProps {
+  data: ChartData[];
+}
+
+export default function Chart({data}: ChartProps) {
+  const chartData: {
+    datasets: ({ borderColor: string; data: number[]; label: string; fill: boolean } | {
+      borderColor: string;
+      data: number[];
+      label: string;
+      fill: boolean
+    })[];
+    labels: string[]
+  } = useMemo(
     () => ({
-      labels: data?.map((entry) =>
-        new Date(entry.timestamp).toLocaleTimeString(),
-      ), // Format timestamps
+      labels: data?.map((entry) => new Date(entry.timestamp).toLocaleTimeString()) || [], // ✅ Ensure labels is an array
       datasets: [
         {
           label: "Open Price",
-          data: data?.map((entry) => entry.open),
+          data: data?.map((entry) => entry.open) ?? [], // ✅ Ensure data is an array
           borderColor: "rgb(53, 162, 235)",
           fill: false,
         },
         {
           label: "Close Price",
-          data: data?.map((entry) => entry.close),
+          data: data?.map((entry) => entry.close) ?? [], // ✅ Ensure data is an array
           borderColor: "rgb(255, 99, 132)",
           fill: false,
         },
@@ -69,5 +85,7 @@ export default function Chart({ data }: { data: any[] }) {
     [data],
   );
 
-  return <Line data={chartData} options={options} />;
+  return <Line
+    data={chartData}
+    options={options}/>;
 }

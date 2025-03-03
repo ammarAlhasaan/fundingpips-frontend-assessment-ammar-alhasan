@@ -3,14 +3,15 @@ import {useEffect, useState} from "react";
 import Fuse from "fuse.js";
 import {Autocomplete, AutocompleteItem} from "@/components/ui";
 import {useRouter, useSearchParams} from "next/navigation";
+import {StockData} from "@/features/stocks/components/StockCard/StockCardContent";
 
-export default function StockSearchContent({stocks}: { stocks: any[] }) {
+export default function StockSearchContent({stocks}: { stocks: StockData[] }) {
   const router = useRouter();
   const searchParams = useSearchParams()
 
   const ticker = searchParams.get('ticker') || ""
 
-  const [filteredStocks, setFilteredStocks] = useState(stocks);
+  const [filteredStocks, setFilteredStocks] = useState<StockData[]>(stocks);
 
 
   useEffect(() => {
@@ -24,7 +25,8 @@ export default function StockSearchContent({stocks}: { stocks: any[] }) {
       threshold: 0.3,
     });
 
-    const result = fuse.search(ticker).map((res) => res.item);
+    const result: StockData[] = fuse.search(ticker).map((res) => res.item);
+
     setFilteredStocks(result);
 
   }, [ticker, stocks]);

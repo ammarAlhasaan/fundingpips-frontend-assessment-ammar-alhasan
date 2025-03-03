@@ -1,5 +1,7 @@
+const API_KEY = process.env.NEXT_PUBLIC_POLYGON_API_KEY;
+
 export async function fetchAllStocks() {
-  const all = `https://api.polygon.io/v3/reference/tickers?type=CS&market=stocks&active=true&limit=100&apiKey=DnbfhNmwKypA3zlGQEiWapCT3G03lY8G`;
+  const all = `https://api.polygon.io/v3/reference/tickers?type=CS&market=stocks&active=true&limit=100&apiKey=${API_KEY}`;
   const res = await fetch(all);
 
   if (!res.ok) console.log("Failed to fetch stock data");
@@ -8,7 +10,7 @@ export async function fetchAllStocks() {
 }
 
 export async function fetchStockPrice(ticker: string) {
-  const all = `https://api.polygon.io/v3/reference/tickers/${ticker}?apiKey=DnbfhNmwKypA3zlGQEiWapCT3G03lY8G`;
+  const all = `https://api.polygon.io/v3/reference/tickers/${ticker}?apiKey=${API_KEY}`;
   const res = await fetch(all, {
     next: { revalidate: 60 },
   });
