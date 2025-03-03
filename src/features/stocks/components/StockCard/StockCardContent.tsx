@@ -12,50 +12,14 @@ import {
   Suspense
 } from "@/components/ui";
 import {useWatchlistStore} from "@/features/stocks";
-import Chart, {ChartData} from "./Chart";
+import Chart from "./Chart";
 import {fetchRandomStockHistory, fetchStockHistory} from "@/features/stocks/api";
+import {Stock, StockTrend} from "@/features/stocks/types";
 
-export interface StockData {
-  ticker: string;
-  name: string;
-  market: string;
-  locale: string;
-  primary_exchange: string;
-  type: string;
-  active: boolean;
-  currency_name: string;
-  cik: string;
-  composite_figi: string;
-  share_class_figi: string;
-  market_cap: number;
-  phone_number: string;
-  address: {
-    address1: string;
-    address2?: string; // Optional
-    city: string;
-    state: string;
-    postal_code: string;
-  };
-  description: string;
-  sic_code: string;
-  sic_description: string;
-  ticker_root: string;
-  homepage_url: string;
-  total_employees: number;
-  list_date: string;
-  branding: {
-    logo_url: string;
-    icon_url: string;
-  };
-  share_class_shares_outstanding: number;
-  weighted_shares_outstanding: number;
-  round_lot: number;
-}
-
-export default function StockCardContent({details, ticker}: { details: StockData, ticker: string }) {
+export default function StockCardContent({details, ticker}: { details: Stock, ticker: string }) {
 
 
-  const [chart, setChart] = useState<ChartData[]>([]);
+  const [chart, setChart] = useState<StockTrend[]>([]);
   const {addStock, watchlist, removeStock} = useWatchlistStore();
   const isInWatchlist = watchlist.includes(details?.ticker);
 

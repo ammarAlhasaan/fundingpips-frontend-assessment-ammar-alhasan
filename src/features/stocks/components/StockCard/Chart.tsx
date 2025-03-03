@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import {Line} from "react-chartjs-2";
 import {useMemo} from "react";
+import {StockTrend} from "@/features/stocks/types";
 
 ChartJS.register(
   CategoryScale,
@@ -42,17 +43,9 @@ export const options: ChartOptions<"line"> = {
   },
 };
 
-export interface ChartData {
-  timestamp: string;
-  open: number;
-  high?: number;
-  low?: number;
-  close: number;
-  volume?: number;
-}
 
 interface ChartProps {
-  data: ChartData[];
+  data: StockTrend[];
 }
 
 export default function Chart({data}: ChartProps) {
@@ -66,17 +59,17 @@ export default function Chart({data}: ChartProps) {
     labels: string[]
   } = useMemo(
     () => ({
-      labels: data?.map((entry) => new Date(entry.timestamp).toLocaleTimeString()) || [], // ✅ Ensure labels is an array
+      labels: data?.map((entry) => new Date(entry.timestamp).toLocaleTimeString()) || [],
       datasets: [
         {
           label: "Open Price",
-          data: data?.map((entry) => entry.open) ?? [], // ✅ Ensure data is an array
+          data: data?.map((entry) => entry.open) ?? [],
           borderColor: "rgb(53, 162, 235)",
           fill: false,
         },
         {
           label: "Close Price",
-          data: data?.map((entry) => entry.close) ?? [], // ✅ Ensure data is an array
+          data: data?.map((entry) => entry.close) ?? [],
           borderColor: "rgb(255, 99, 132)",
           fill: false,
         },
